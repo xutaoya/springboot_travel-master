@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>酒店列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" th:href="@{/layuiadmin/layui/css/layui.css}"  media="all">
+    <link rel="stylesheet" th:href="@{/layuiadmin/style/admin.css}" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">酒店列表</div>
+                <div class="layui-card-body">
+
+                    <table class="layui-hide" id="test-table-reload" lay-filter="test-table-reload"></table>
+
+                    <script type="text/html" id="barlist">
+                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/layuiadmin/layui/layui.js}"></script>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        //方法级渲染
+        table.render({
+            elem: '#test-table-reload'
+            ,url: 'http://localhost:8080/hotel'
+            ,cols: [
+                [
+                    {checkbox: true, fixed: true}
+                    ,{field:'id', title: 'ID', width:180, sort: true, align:'center'}
+                    ,{field:'name', title: '酒店名称', width:180, align:'center', edit: 'text'}
+                    ,{field:'price', title: '价格', width:100, align:'center',sort: true, edit: 'text'}
+                    ,{field:'bed', title: '床', width:100,sort: true, align:'center'}
+                    ,{field:'star', title: '评分', width:104,sort: true, align:'center'}
+                    ,{field:'addr', title: '地点', width:124,sort: true, align:'center'}
+                    ,{field:'miaoshu', title: '酒店概述',width:400, align:'center',event: 'setSign', style:'cursor: pointer;'}
+                    ,{width:136, title:'操作', align:'center', toolbar: '#barlist'}
+                ]
+            ]
+            ,page: true
+            ,height: 470
+        });
+
+        //监听工具条
+        table.on('tool(test-table-reload)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'detail'){
+                layer.msg('ID：'+ data.id + ' 的查看操作');
+            } else if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    obj.del();
+                    layer.close(index);
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/hotel/"+ data.id ,
+                        data: {"id": data.id},
+                        dataType: "json",
+                        contentType: "application/json;charset=utf-8",
+                        success: function(result) {
+                            if(result.code == 0) {
+                                layer.msg(result.message,{icon: 1});
+                            } else {
+                                layer.msg(result.message, {
+                                    icon: 5
+                                });
+                            }
+                        }
+                    });
+                });
+            } else if(obj.event === 'edit'){
+                // layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                layer.confirm('<div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">酒店名称</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <input type="text" name="title" id="title" required  lay-verify="required" value="'+data.name+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>'+
+                    '<div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">价格</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <input type="text" name="price" id="price" required  lay-verify="required" value="'+data.price+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>'+
+                    '<div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">床</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <input type="text" name="bed" id="bed" required  lay-verify="required" value="'+data.bed+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>'+
+                    '<div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">评分</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <input type="text" name="star" id="star" required  lay-verify="required" value="'+data.star+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>'+
+                    '<div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">地点</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <input type="text" name="addr" id="addr" required  lay-verify="required" value="'+data.addr+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '<div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">描述</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <input type="text" name="miaoshu" id="miaoshu" required  lay-verify="required" value="'+data.miaoshu+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>'+
+                    '  </div>',{btn:['确定','取消']},function (index,layero) {
+                    var title=$("#title").val()
+                    var price=$("#price").val()
+                    var bed=$("#bed").val()
+                    var star=$("#star").val()
+                    var addr=$("#contry").val()
+                    var miaoshu=$("#miaoshu").val()
+                    console.log("====--==="+title+'\n'+price+'\n'+bed+'\n'+star+'\n'+addr+'\n'+miaoshu)
+
+                    $.ajax({
+                        type: "PUT",
+                        url: "/hotel/"+ data.id ,
+                        data: JSON.stringify({"name":title,"price":price,"bed":bed,"star":star,"addr":addr,"miaoshu":miaoshu}),
+                        dataType: "json",
+                        contentType: "application/json;charset=utf-8",
+                        success: function(result) {
+                            if(result.code == 0) {
+                                layer.msg(result.message,{icon: 1});
+                            } else {
+                                layer.msg(result.message, {
+                                    icon: 5
+                                });
+                            }
+                        }
+                    });
+                })
+            }else if(obj.event === 'setSign'){
+                layer.prompt({
+                    formType: 2
+                    ,title: '修改 ID 为 ['+ data.id +'] 的房间描述'
+                    ,value: data.sign
+                }, function(value, index){
+
+                    alert("修改后"+value)
+                    layer.close(index);
+                    //这里一般是发送修改的Ajax请求
+
+                    //同步更新表格和缓存对应的值
+                    obj.update({
+                        sign: value
+                    });
+                });
+            }
+        });
+
+        var $ = layui.$, active = {
+            reload: function(){
+                var demoReload = $('#test-table-demoReload');
+
+                //执行重载
+                table.reload('test-table-reload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        key: {
+                            id: demoReload.val()
+                        }
+                    }
+                });
+            }
+        };
+
+        $('.test-table-reload-btn .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+</script>
+</body>
+</html>

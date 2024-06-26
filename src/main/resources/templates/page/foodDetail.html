@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>美食详情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Your description"/>
+    <meta name="keywords" content="Your keywords"/>
+    <meta name="author" content="Your name"/>
+    <!-- CSS Style -->
+    <link rel="stylesheet" th:href="@{/css/style1.css}">
+    　<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script  type="text/javascript" th:inline="javascript">
+
+        var id=[[${oneFood.id}]];
+        $(function () {
+            $('#table_refresh').load("/travel/local?id="+id);
+            //alert(id)
+        })
+
+    </script>
+
+</head>
+
+<body class="single-product-page">
+
+
+<!-- head 头部 -->
+<div id="head" th:include="common/index_header :: copyheader"></div>
+<br>
+<!-- Main Container -->
+<section class="main-container col1-layout">
+        <div class="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-main">
+                    <div class="product-view">
+                        <div class="product-essential">
+                            <form action="#" method="post" id="food">
+                                <div class="product-img-box col-lg-5 col-sm-6 col-xs-12">
+                                    <div class="new-label new-top-left"> New </div>
+                                    <div class="product-image">
+                                        <div class="product-full"> <img id="product-zoom" th:src="@{${oneFood.img}}" src="images/products/img02.jpg" data-zoom-image="images/products/img02.jpg" alt="product-image"> </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="product-shop col-lg-7 col-sm-6 col-xs-12">
+                                    <div class="product-name">
+                                        <h1 th:text="${oneFood.title}"></h1>
+                                    </div>
+                                    <div class="info-orther">
+                                        <p>美食Id: <span id="id" name="id" th:text="${oneFood.id}"></span></p>
+                                        <!--    <p>剩余票数: <span class="in-stock" th:text="${oneFood.infosource}"></span></p>-->
+                                    </div>
+
+                                    <div class="short-description">
+                                        <p>美食概述: <span id="infosource" name="infosource" th:text="${oneFood.infosource}"></span></p>
+<!--                                        <h2>美食概述</h2>-->
+<!--                                        <p th:text="${oneFood.infosource}"></p>-->
+                                    </div>
+                                    <div class="form-share">
+                                        <div class="sendtofriend-print"> <a href="javascript:print();"><i class="fa fa-print"></i> Print</a> <a href="#"><i class="fa fa-envelope-o fa-fw"></i> Send to a friend</a> </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-collateral col-lg-12 col-sm-12 col-xs-12">
+                    <div class="add_info">
+                        <ul id="product-detail-tab" class="nav nav-tabs product-tabs">
+                            <li class="active"> <a href="#product_tabs_description" data-toggle="tab"> Food Description </a> </li>
+                        </ul>
+                        <div id="productTabContent" class="tab-content">
+                            <div class="tab-pane fade in active" id="product_tabs_description">
+                                <div class="std">
+                                    <p th:text="${oneFood.comment}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Main Container End -->
+
+
+<!--底部-->
+<div th:include="common/index_footer :: copyfooter"></div>
+
+
+<script th:src="@{/js2/owl.carousel.min.js}"></script>
+<script th:src="@{/js2/main.js}"></script>
+
+
+
+
+
+
+
+</body>
+</html>

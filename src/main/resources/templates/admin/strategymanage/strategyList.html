@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>酒店列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" th:href="@{/layuiadmin/layui/css/layui.css}"  media="all">
+    <link rel="stylesheet" th:href="@{/layuiadmin/style/admin.css}" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">酒店列表</div>
+                <div class="layui-card-body">
+
+                    <table class="layui-hide" id="test-table-reload" lay-filter="test-table-reload"></table>
+
+                    <script type="text/html" id="barlist">
+                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/layuiadmin/layui/layui.js}"></script>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        //方法级渲染
+        table.render({
+            elem: '#test-table-reload'
+            ,url: 'http://localhost:8080/strategy'
+            ,cols: [
+                [
+                    {checkbox: true, fixed: true}
+                    ,{field:'id', title: 'ID', width:180, sort: true, align:'center'}
+                    ,{field:'name', title: '景点名称', width:180, align:'center', edit: 'text'}
+                    ,{field:'line', title: '线路名称', width:180, align:'center', edit: 'text'}
+                    ,{field:'destination', title: '目的地', width:180, align:'center', edit: 'text'}
+                    ,{field:'tool', title: '交通工具', width:180, align:'center', edit: 'text'}
+                    ,{field:'publisher', title: '发布人', width:180, align:'center', edit: 'text'}
+                    ,{width:136, title:'操作', align:'center', toolbar: '#barlist'}
+                ]
+            ]
+            ,page: true
+            ,height: 470
+        });
+
+        //监听工具条
+        table.on('tool(test-table-reload)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'detail'){
+                layer.msg('ID：'+ data.id + ' 的查看操作');
+            } else if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    obj.del();
+                    layer.close(index);
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/strategy/"+ data.id ,
+                        data: {"id": data.id},
+                        dataType: "json",
+                        contentType: "application/json;charset=utf-8",
+                        success: function(result) {
+                            if(result.code == 0) {
+                                layer.msg(result.message,{icon: 1});
+                            } else {
+                                layer.msg(result.message, {
+                                    icon: 5
+                                });
+                            }
+                        }
+                    });
+                });
+            } else if(obj.event === 'edit'){
+                // layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                layer.confirm('<div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">景点名称</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <input type="text" name="title" id="title" required  lay-verify="required" value="'+data.name+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>'+
+                    '<div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">线路名称</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <input type="text" name="line" id="line" required  lay-verify="required" value="'+data.line+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>'+
+                    '<div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">目的地</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <input type="text" name="destination" id="destination" required  lay-verify="required" value="'+data.destination+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>'+
+                    '<div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">交通工具</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <input type="text" name="tool" id="tool" required  lay-verify="required" value="'+data.tool+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>'+
+                    '<div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">发布人</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <input type="text" name="publisher" id="publisher" required  lay-verify="required" value="'+data.publisher+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>',{btn:['确定','取消']},function (index,layero) {
+                    var title=$("#title").val()
+                    var line=$("#line").val()
+                    var destination=$("#destination").val()
+                    var tool=$("#tool").val()
+                    var publisher=$("#publisher").val()
+                    console.log("====--==="+title+'\n'+line+'\n'+destination+'\n'+tool+'\n'+publisher)
+
+                    $.ajax({
+                        type: "PUT",
+                        url: "/strategy/"+ data.id ,
+                        data: JSON.stringify({"name":title,"line":line,"destination":destination,"tool":tool,"publisher":publisher}),
+                        dataType: "json",
+                        contentType: "application/json;charset=utf-8",
+                        success: function(result) {
+                            if(result.code == 0) {
+                                layer.msg(result.message,{icon: 1});
+                            } else {
+                                layer.msg(result.message, {
+                                    icon: 5
+                                });
+                            }
+                        }
+                    });
+                })
+            }else if(obj.event === 'setSign'){
+                layer.prompt({
+                    formType: 2
+                    ,title: '修改 ID 为 ['+ data.id +'] 的房间描述'
+                    ,value: data.sign
+                }, function(value, index){
+                    alert("修改后"+value)
+                    layer.close(index);
+                    //这里一般是发送修改的Ajax请求
+
+                    //同步更新表格和缓存对应的值
+                    obj.update({
+                        sign: value
+                    });
+                });
+            }
+        });
+
+        var $ = layui.$, active = {
+            reload: function(){
+                var demoReload = $('#test-table-demoReload');
+
+                //执行重载
+                table.reload('test-table-reload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        key: {
+                            id: demoReload.val()
+                        }
+                    }
+                });
+            }
+        };
+
+        $('.test-table-reload-btn .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+</script>
+</body>
+</html>
