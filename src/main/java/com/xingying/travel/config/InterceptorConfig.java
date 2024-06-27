@@ -19,7 +19,7 @@ public class InterceptorConfig implements HandlerInterceptor {
     private static final Logger log = LoggerFactory.getLogger(InterceptorConfig.class);
 
     /**
-     * 进入controller层之前拦截请求
+     * 进入Controller层之前的拦截请求
      * @param httpServletRequest
      * @param httpServletResponse
      * @param o

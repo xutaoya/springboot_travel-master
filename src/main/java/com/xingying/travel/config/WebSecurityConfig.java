@@ -8,8 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 /**
- * @Title: 安全配置
- * @version: 1.0.0
+ * &#064;Title:  安全配置
+ * &#064;version:  1.0.0
  * 所有地址都可以匿名访问
  **/
 @Configuration
@@ -19,10 +19,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
-                .and().csrf().disable();
-        http.headers().frameOptions().sameOrigin();
+                .antMatchers("/**").permitAll()// 允许所有路径匿名访问
+                .anyRequest().authenticated()// 其他请求需要认证
+                .and().csrf().disable();// 禁用 CSRF
+        http.headers().frameOptions().sameOrigin();// 允许同源的 iframe 被嵌套
     }
 
 }

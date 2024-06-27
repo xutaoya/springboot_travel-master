@@ -1,5 +1,6 @@
 package com.xingying.travel.config;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Configuration
+@Data
 public class ConstantConfig {
 
     @Value("${aliyun.oss.endpoint}")
@@ -27,43 +29,4 @@ public class ConstantConfig {
     @Value("${aliyun.oss.filehost}")
     private String filehost;
 
-    public String getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-    }
-
-    public String getBucketname() {
-        return bucketname;
-    }
-
-    public void setBucketname(String bucketname) {
-        this.bucketname = bucketname;
-    }
-
-    public String getKeyid() {
-        return keyid;
-    }
-
-    public void setKeyid(String keyid) {
-        this.keyid = keyid;
-    }
-
-    public String getKeysecret() {
-        return keysecret;
-    }
-
-    public void setKeysecret(String keysecret) {
-        this.keysecret = keysecret;
-    }
-
-    public String getFilehost() {
-        return filehost;
-    }
-
-    public void setFilehost(String filehost) {
-        this.filehost = filehost;
-    }
 }

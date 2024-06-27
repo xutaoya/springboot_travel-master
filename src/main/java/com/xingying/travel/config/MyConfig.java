@@ -22,20 +22,25 @@ public class MyConfig implements WebMvcConfigurer {
     }
 
 
-    // 这个方法用来注册拦截器，我们自己写好的拦截器需要通过这里添加注册才能生效
+    // 这个方法用来注册拦截器，我们自己写好地拦截器需要通过这里添加注册才能生效
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //registry.addInterceptor(interceptorConfig).addPathPatterns()
-        registry.addInterceptor(interceptorConfig).addPathPatterns("/admin/**").excludePathPatterns("/admin/login").excludePathPatterns("/admin/adminlogin");
+        registry.addInterceptor(interceptorConfig)
+                .addPathPatterns("/admin/**") // 拦截 /admin/** 下的所有请求
+                .excludePathPatterns("/admin/login") //排除 /admin/login 路径
+                .excludePathPatterns("/admin/adminlogin");// 排除 /admin/adminlogin 路径
     }
 
+    /**
+     * 视图控制器
+     * @param registry
+     */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("forward:/dist/view");
 
         registry.addViewController("/admin").setViewName("forward:/admin/adminlogin");
 
-
-        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);//设置视图控制器的顺序为最高优先级
     }
 }
