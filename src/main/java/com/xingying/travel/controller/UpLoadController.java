@@ -64,7 +64,7 @@ public class UpLoadController {
             outputStream.close();
             file.transferTo(newFile);*/
 
-            String dirPath = "C:/Users/Administrator/Desktop/xingying_tourism_network/src/main/resources/static/images";
+            String dirPath = "D:/javacode/SpringBoot/springboot_travel-master/springboot_travel-master/src/main/resources/static/images";
             File filePath = new File(dirPath);
 
             if(!filePath.exists()){filePath.mkdirs();}
