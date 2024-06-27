@@ -29,7 +29,7 @@ public interface UserDao extends JpaRepository<User,String>,JpaSpecificationExec
     public User findByName(String name);
 
     /**
-     *
+     *根据邮件查询用户
      * @param email
      * @return
      */

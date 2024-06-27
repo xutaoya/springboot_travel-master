@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * @Title: 监听队列
- * @version: 1.0.0
+ * &#064;Title:  监听队列
+ * &#064;version:  1.0.0
  **/
 @Component
 @RabbitListener(queues = "sms")

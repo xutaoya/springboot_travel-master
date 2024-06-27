@@ -18,7 +18,8 @@ public interface OrdersDao extends JpaRepository<Orders,String>,JpaSpecification
 
 
 
-    @Modifying@Transactional
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE orders SET `status`='1' WHERE id = ? ",nativeQuery = true)
     void updateStatus(String id);
 
