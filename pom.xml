@@ -144,8 +144,10 @@
 			<artifactId>lombok</artifactId>
 			<scope>annotationProcessor</scope>
 		</dependency>
-
-
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

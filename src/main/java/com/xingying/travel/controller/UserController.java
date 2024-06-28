@@ -5,6 +5,7 @@ import com.xingying.travel.common.Result;
 import com.xingying.travel.common.StatusCode;
 import com.xingying.travel.pojo.User;
 import com.xingying.travel.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -118,9 +119,18 @@ public class UserController {
 	public Result update(@RequestBody User user, HttpSession session){
 		User us= (User) session.getAttribute("user");
 		user.setId(us.getId());
-		user.setPassword(us.getPassword());
+		// 检查请求中的密码，如果不为空则更新密码
+		if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+			// 这里假设你有一个方法来加密密码，例如 md5 加密
+			String encryptedPassword = encoder.encode(user.getPassword());
+			user.setPassword(encryptedPassword);
+		} else {
+			// 如果新密码为空，则使用旧密码
+			user.setPassword(us.getPassword());
+		}
+
 		userService.update(user);
-		return new Result(true,StatusCode.OK,"修改成功");
+		return new Result(true, StatusCode.OK, "修改成功");
 	}
 	
 	/**
@@ -169,21 +179,6 @@ public class UserController {
 
 		userService.add(user);
 		return new Result(true,StatusCode.OK,"注册成功");
-		/*
-		//得到redis缓存中的验证码
-		String checkcodeRedis =(String) redisTemplate.opsForValue().get("checkcode_"+user.getMobile());
-
-		if(checkcodeRedis==null){
-			return new Result(false,StatusCode.ERROR,"请获取验证码");
-		}
-		 if(!checkcodeRedis.equals(code)){
-			return new Result(false,StatusCode.ERROR,"验证码错误");
-		}
-		else {
-
-			userService.add(user);
-			return new Result(true,StatusCode.OK,"注册成功");
-		}*/
 	}
 
 	/**

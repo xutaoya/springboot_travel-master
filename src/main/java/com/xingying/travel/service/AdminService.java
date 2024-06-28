@@ -3,6 +3,7 @@ package com.xingying.travel.service;
 import com.xingying.travel.dao.AdminDao;
 import com.xingying.travel.pojo.Admin;
 import com.xingying.travel.util.IdWorker;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务层
+ * 管理员服务层
  * 
  * @author Administrator
  *
@@ -87,7 +88,7 @@ public class AdminService {
 	 */
 	public void add(Admin admin) {
 		admin.setId( idWorker.nextId()+"" );
-		String newpassword = encoder.encode(admin.getPassword());//加密后的密码
+		String newpassword = DigestUtils.md5Hex(admin.getPassword());//加密后的密码
 		admin.setPassword(newpassword);
 		adminDao.save(admin);
 	}
@@ -109,7 +110,7 @@ public class AdminService {
 	}
 
 	/**
-	 * 动态条件构建
+	 * 动态条件构建id,name,password
 	 * @param searchMap
 	 * @return
 	 */
@@ -120,7 +121,7 @@ public class AdminService {
 			@Override
 			public Predicate toPredicate(Root<Admin> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicateList = new ArrayList<Predicate>();
-                // 
+                // id
                 if (searchMap.get("id")!=null && !"".equals(searchMap.get("id"))) {
                 	predicateList.add(cb.like(root.get("id").as(String.class), "%"+(String)searchMap.get("id")+"%"));
                 }

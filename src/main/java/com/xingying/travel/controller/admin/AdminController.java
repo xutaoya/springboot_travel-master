@@ -6,6 +6,7 @@ import com.xingying.travel.common.StatusCode;
 import com.xingying.travel.pojo.Admin;
 import com.xingying.travel.pojo.User;
 import com.xingying.travel.service.AdminService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -199,7 +200,9 @@ public class AdminController {
 
 		Admin admindmin= (Admin) session.getAttribute("admin");
 		Admin admins=adminService.findById(admindmin.getId());
-		boolean old=encoder.matches(oldpad,admins.getPassword());
+		String password =admindmin.getPassword();
+		String hashedPassword = DigestUtils.md5Hex(password);
+		boolean old=encoder.matches(oldpad,hashedPassword);
 		if (old){
 			String newPassd=encoder.encode(passwd);
 			admins.setPassword(newPassd);

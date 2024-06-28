@@ -65,29 +65,13 @@
 
 <div id="content">
     <div class="container">
-        <!--<div id="options" class="clearfix">-->
-            <!--<ul id="filters" class="pagination option-set clearfix" data-option-key="filter">-->
-                <!--&lt;!&ndash;<li><a href="#filter" data-option-value="*" class="selected">All</a></li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li><a href="#filter" data-option-value=".isotope-filter1">tours</a></li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li><a href="#filter" data-option-value=".isotope-filter2">cruises</a></li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li><a href="#filter" data-option-value=".isotope-filter3">hotels</a></li>&ndash;&gt;-->
-            <!--</ul>-->
-        <!--</div>-->
-<!--        <div class="isotope-box">-->
-<!--            <ul class="list-group">-->
-<!--                <li class="list-group-item">Cras justo odio</li>-->
-<!--                <li class="list-group-item">Dapibus ac facilisis in</li>-->
-<!--                <li class="list-group-item">Morbi leo risus</li>-->
-<!--                <li class="list-group-item">Porta ac consectetur ac</li>-->
-<!--                <li class="list-group-item">Vestibulum at eros</li>-->
-<!--            </ul>-->
+
             <div id="container" class="clearfix" th:each="gallery : ${gallerys}">
                 <ul class="thumbnails clearfix" id="isotope-items">
                     <li class="element isotope-filter2 col-sm-12 col-xs-12">
                         <div class="thumb-isotope">
                             <div class="thumbnail clearfix" >
-                                <a th:href="@{${gallery.img}}" rel="prettyPhoto[max]"
-                                   title="Photo">
+                                <a th:href="@{${gallery.img}}" rel="prettyPhoto[max]" title="Photo">
                                     <figure>
                                         <img th:src="@{${gallery.img}}">
                                     </figure>

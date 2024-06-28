@@ -3,6 +3,7 @@ package com.xingying.travel.util;
 import java.math.BigDecimal;
 
 /**
+ * 数据的高精度加减乘除运算
  */
 public class BigDecimalUtil {
 

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务层
+ * 画廊服务层
  * 
  * @author Administrator
  *
@@ -91,10 +91,7 @@ public class GalleryService {
 		//取到缓存中的文件url
 		String fileurl = (String) redisTemplate.opsForValue().get("gallery");
 		System.out.println(fileurl+"============");
-
 		gallery.setImg("/images/"+fileurl);
-//		gallery.setImg("https://travel-class.oss-cn-hangzhou.aliyuncs.com/"+fileurl);
-
 		galleryDao.save(gallery);
 	}
 

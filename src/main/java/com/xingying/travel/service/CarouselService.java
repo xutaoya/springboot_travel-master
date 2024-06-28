@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务层
+ * 轮播服务层
  * 
  * @author Administrator
  *
@@ -103,7 +103,7 @@ public class CarouselService {
 	}
 
 	/**
-	 * 动态条件构建
+	 * 动态条件构建id,title,comment,scenictime
 	 * @param searchMap
 	 * @return
 	 */

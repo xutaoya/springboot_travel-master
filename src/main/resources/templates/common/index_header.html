@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>立知行旅游网</title>
+    <title>打败携程旅游网</title>
     <style type="text/css">
          body {
                background-size: cover;
@@ -77,8 +77,8 @@
     <div class="top1_wrapper">
         <div class="container">
             <div class="top1 clearfix">
-                <div class="email1"><a href="#">travel@zhilixing.com</a></div>
-                <div class="phone1">+888 6668888</div>
+                <div class="email1"><a href="#">dabaixiecheng.com</a></div>
+                <div class="phone1">+8888888</div>
                 <div class="social_wrapper">
                     <ul class="social clearfix" th:if="${session.user==null}">
                         <li>  <a href="/dist/login" class="btn-default btn2" id="login">登录</a> </li>
@@ -120,7 +120,7 @@
                     <div class="navbar-collapse navbar-collapse_ collapse">
                         <ul class="nav navbar-nav sf-menu clearfix">
                             <li><a href="/dist/view">首页</a></li>
-                            <li><a href="/dist/travel">立知旅行</a></li>
+                            <li><a href="/dist/travel">去旅行</a></li>
                             <li><a href="/dist/gallery">旅行相册</a></li>
                             <li><a href="/dist/hotels">酒店住宿</a>
                             <li><a href="/dist/food">美食推荐</a></li>
@@ -142,10 +142,6 @@
                        <span class="btn"></span>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()"><span aria-hidden="true" >×</span></button>
                         <h4 class="modal-title">我的订单</h4>
-                        <ul id="myTab" class="nav nav-tabs" role="tablist">
-                            <li class="active"><a href="#" id="scenic" onclick="scenic()" role="tab" data-toggle="tab">景点</a></li>
-                            <li><a href="#" role="tab" id="hotel" onclick="hotel()" data-toggle="tab">酒店</a></li>
-                        </ul>
                     </div>
                     <div class="modal-body">
                         <div class="thumbnail clearfix">
@@ -227,9 +223,10 @@
                 <div class="modal-body stu_modal">
                     <div class="form-group"><label>姓名：</label><input type="text" class="form-control" id="stu_name"></div>
                     <div class=""><label>性别：</label><input type="radio" name="sex" value="男" id="man">男<input type="radio" name="sex" value="女" id="woman">女</div><br>
-                    <div class="form-group"><label>年龄：</label><input type="text" onkeyup = "value=value.replace(/[^\d]/g,'')" class="form-control" id="stu_age" onchange="checkPhone(this)"></div>
-                    <div class="form-group"><label>电话：</label><input type="" class="form-control" id="stu_phone" onchange="checkPhone(this)"></div>
+                    <div class="form-group"><label>年龄：</label><input type="text" class="form-control" id="stu_age" onchange="checkAge(this)"></div>
+                    <div class="form-group"><label>电话：</label><input type="text" class="form-control" id="stu_phone" onchange="checkPhone(this)"></div>
                     <div class="form-group"><label>邮箱：</label><input type="email"  class="form-control" id="stu_email" onchange="checkEmail(this)" ></div>
+                    <div class="form-group"><label>新密码：</label><input type="password" class="form-control" id="newPassword"></div>
                     <div class="modal-footer"><button type="button" class="btn btn-save" data-dismiss="modal" onclick="change()">提交</button><button type="button" class="btn btn-theme-border" data-dismiss="modal">关闭</button></div>
                 </div>
             </div>
@@ -315,8 +312,35 @@
             inf()
         }
 
+        function checkAge(obj) {
+            var age = obj.value.trim(); // 获取输入框中的年龄值并去除首尾空格
+
+            // 检查输入是否为空
+            if (age === '') {
+                alert("请输入年龄！");
+                obj.value = '';
+                return false;
+            }
+
+            // 检查输入是否为数字
+            if (isNaN(age)) {
+                alert("年龄必须是数字！");
+                obj.value = '';
+                return false;
+            }
+
+            // 检查年龄范围
+            var ageNum = parseInt(age, 10); // 将输入的字符串转换为整数
+            if (ageNum < 0 || ageNum > 150) { // 假设年龄在 0 到 150 之间为合理范围
+                alert("年龄必须在 0 到 150 岁之间！");
+                obj.value = '';
+                return false;
+            }
+            return true;
+        }
+
         function checkPhone(obj) {
-            var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+            var myreg = /^1[3456789]\d{9}$/;
             if (!myreg.test(obj.value)) {
                 alert("手机号码格式不正确！");
                 obj.value = '';
@@ -336,6 +360,7 @@
                 return true;
             }
         }
+
 
         function inf() {
             $.ajax({
@@ -360,33 +385,42 @@
                 }
             })
         }
-        
-        
+
+
         function change() {
-                var name=$("#stu_name").val()
-                var sex=$('input:radio[name="sex"]:checked').val();
-                var age=$("#stu_age").val()
-                var mobile=$("#stu_phone").val()
-                var email=$("#stu_email").val()
-                var data = JSON.stringify({name:name,sex:sex,age:age,mobile:mobile,email:email})
-                $.ajax({
-                    type: "post",
-                    url: "/user/change",
-                    data: data,
-                    contentType: "application/json; charset=utf-8",
-                    dataType:"JSON",
-                    success:function(result){
-                        if (result.code==0){
-                            alert("修改成功")
-                        }else {
-                            alert("修改失败！")
-                        }
-                        $("#editModal").modal('hide');
-                    },
-                    error:function () {
-                        alert('修改失败！');
+            var name = $("#stu_name").val();
+            var sex = $('input:radio[name="sex"]:checked').val();
+            var age = $("#stu_age").val();
+            var mobile = $("#stu_phone").val();
+            var email = $("#stu_email").val();
+            var newpassword= $("#newPassword").val(); // 新密码输入框的 ID
+            var data = {
+                name: name,
+                sex: sex,
+                age: age,
+                mobile: mobile,
+                email: email,
+                password: newpassword  // 将新密码添加到数据对象中
+            };
+
+            $.ajax({
+                type: "post",
+                url: "/user/change",
+                data: JSON.stringify(data), // 将数据对象转换为 JSON 字符串
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(result) {
+                    if (result.code == 0) {
+                        alert("修改成功");
+                    } else {
+                        alert("修改失败！");
                     }
-                })
+                    $("#editModal").modal('hide');
+                },
+                error: function() {
+                    alert('修改失败！');
+                }
+            });
         }
 
 

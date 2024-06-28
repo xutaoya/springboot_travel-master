@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>立知旅行</title>
+    <title>打败携程旅行</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -107,7 +107,7 @@
                                                   <div class="txt3 clearfix">
                                                       <div class="left_side">
                                                           <div class="price" >￥<span th:text="${attr.price}"></span></div>
-                                                          <div class="nums">per/Day</div>
+                                                          <div class="nums">人次/天</div>
                                                       </div>
                                                       <div class="right_side"><a th:href="@{'/travel/oneAttr?id='+${attr.id}}" class="btn-default btn1">详情</a>
                                                       <!--<div class="right_side"><a href="product" class="btn-default btn1">Details</a>-->
@@ -124,8 +124,8 @@
                           <!--分页-->
                           <div class="pager_wrapper">
                               <ul class="pager clearfix" id="pages">
-                                  <li class="prev"><a th:if="${not first}" th:href="@{/dist/travel(start=${number -1})}">Previous</a></li>
-                                  <li class="next"><a th:if="${not last}" th:href="@{/dist/travel(start=${number+1})}">Next</a></li>
+                                  <li class="prev"><a th:if="${not first}" th:href="@{/dist/travel(start=${number -1})}">上一页</a></li>
+                                  <li class="next"><a th:if="${not last}" th:href="@{/dist/travel(start=${number+1})}">下一页</a></li>
 
                               </ul>
                           </div>

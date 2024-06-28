@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务层
+ * 酒店订单服务层
  * 
  * @author Administrator
  *

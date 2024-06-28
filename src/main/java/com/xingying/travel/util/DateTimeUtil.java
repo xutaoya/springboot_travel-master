@@ -9,13 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * 日期字符串的转换
  */
 public class DateTimeUtil {
 
-    //joda-time
 
-    //str->Date
-    //Date->str
     public static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 

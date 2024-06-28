@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务层
+ * 食物服务层
  * 
  * @author Administrator
  *
@@ -94,7 +94,6 @@ public class FoodService {
 		System.out.println(fileurl+"============");
 
 		food.setImg("/images/"+fileurl);
-//		gallery.setImg("https://travel-class.oss-cn-hangzhou.aliyuncs.com/"+fileurl);
 
 		foodDao.save(food);
 	}
@@ -116,7 +115,7 @@ public class FoodService {
 	}
 
 	/**
-	 * 动态条件构建
+	 * 动态条件构建id,img,title,comment,infosource
 	 * @param searchMap
 	 * @return
 	 */

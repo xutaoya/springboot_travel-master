@@ -3,11 +3,6 @@
 <head>
     <meta charset="UTF-8"/>
     <title>酒店详情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Your description"/>
-    <meta name="keywords" content="Your keywords"/>
-    <meta name="author" content="Your name"/>
 
 
     <!-- CSS Style -->
@@ -20,11 +15,6 @@
         var id=[[${oneAttr.id}]];
         $(function () {
             $('#table_refresh').load("/hotel/local?id="+id);
-            //alert(id)
-
-
-
-
         })
 
 
@@ -78,7 +68,7 @@
                         swal("权限不足","请先登录，亲")
                         //top.location='/dist/login'
                     }else if (result.code== 201){
-                        swal("库存不足", "You clicked the button!", "error");
+                        swal("库存不足", "换个房间住吧!", "error");
                     }else {
                         swal("系统故障", "程序出错....");
                     }
@@ -108,33 +98,27 @@
                                     <div class="new-label new-top-left"> New </div>
                                     <div class="product-image">
                                         <div class="product-full"> <img id="product-zoom" th:src="@{${oneAttr.img}}" src="images/products/img02.jpg" data-zoom-image="images/products/img02.jpg" alt="product-image"> </div>
-                                        <!--<div class="more-views">-->
-                                            <!--<div class="slider-items-products">-->
-                                                <!--<div id="gallery_01" class="product-flexslider hidden-buttons product-img-thumb">-->
-                                                    <!--<div class="slider-items slider-width-col4 block-content">-->
-                                                        <!--<div class="more-views-items"> <img id="product-zoom" th:src="@{${oneAttr.img}}" src="images/products/img02.jpg" alt="product-image"></div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
+
                                     </div>
-                                    <!-- end: more-images -->
+
                                 </div>
                                 <div class="product-shop col-lg-7 col-sm-6 col-xs-12">
                                     <div class="product-name">
                                         <h1 th:text="${oneAttr.name}"></h1>
                                     </div>
                                     <div class="rating"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i>
-                                        <p class="rating-links"> <a href="#">4 Review(s)</a> <span class="separator">|</span> <a href="#"><i class="fa fa-pencil"></i> write a review</a> </p>
+                                        <p class="rating-links"> <a href="#">写评价</a> <span class="separator">|</span> <a href="#"><i class="fa fa-pencil"></i> 进行投诉</a> </p>
                                     </div>
                                     <div class="price-block">
                                         <div class="price-box">
-                                            <p class="special-price"> <span class="price-label">Special Price</span> <span id="product-price-48" class="price"> ￥<span th:text="${oneAttr.price}"></span> </span> </p>
+                                            <p class="special-price"> <span class="price-label">特价</span> <span id="product-price-48" class="price"> ￥<span th:text="${oneAttr.price}"></span> </span> </p>
                                         </div>
                                     </div>
                                     <div class="info-orther">
                                         <p hidden>宾馆Id: <span id="id" name="id" th:text="${oneAttr.id}"></span></p>
-                                        <p>剩余房间: <span class="in-stock" th:text="${oneAttr.bed}"></span></p>
+                                        <p ><strong>剩余房间: </strong><span class="in-stock" th:text="${oneAttr.bed}"></span></p>
+                                        <br>
+                                        <br>
                                     </div>
 
 
@@ -142,7 +126,6 @@
                                         <div class='col-sm-6'>
                                             <div class="form-group">
                                                 <label>入住时间：</label>
-                                                <!--指定 date标记-->
                                                 <div class='input-group date' id='datetimepicker1'>
                                                     <input required="required" type=Date id="begin" class="form-control"/>
 
@@ -152,7 +135,6 @@
                                         <div class='col-sm-6'>
                                             <div class="form-group">
                                                 <label>离开时间：</label>
-                                                <!--指定 date标记-->
                                                 <div class='input-group date' id='datetimepicker2'>
                                                     <input required="required" type=Date id="end" class="form-control" />
 
@@ -180,16 +162,10 @@
                                                 </div>
                                                 <button onClick="pay();" name="btn" class="button btn-cart" title="Add to Cart" type="button">立即下单</span></button>
                                             </div>
-                                            <!--<div class="email-addto-box">-->
-                                                <!--<ul class="add-to-links">-->
-                                                    <!--<li> <a class="link-wishlist" href="#"><span>Add to Wishlist</span></a></li>-->
-                                                    <!--<li><span class="separator">|</span> <a class="link-compare" href="#"><span>Add to Compare</span></a></li>-->
-                                                <!--</ul>-->
-                                            <!--</div>-->
                                         </div>
                                     </div>
                                     <div class="form-share">
-                                        <div class="sendtofriend-print"> <a href="javascript:print();"><i class="fa fa-print"></i> Print</a> <a href="#"><i class="fa fa-envelope-o fa-fw"></i> Send to a friend</a> </div>
+                                        <div class="sendtofriend-print"> <a href="javascript:print();"><i class="fa fa-print"></i> 打印</a> <a href="#"><i class="fa fa-envelope-o fa-fw"></i> 分享</a> </div>
                                     </div>
                                 </div>
                             </form>
@@ -214,13 +190,10 @@
         </div>
     </div>
 </section>
-<!-- Main Container End -->
-
-
 <div id="popular_cruises1">
     <div class="container">
 
-        <h2 class="animated">Scenic Recommendation</h2>
+        <h2 class="animated">景点推荐</h2>
 
         <br><br>
 
@@ -240,17 +213,14 @@
                                                             <img th:src="@{${scenic.img}}"  alt=""
                                                                  class="img-responsive"/>
                                                             <div class="over">
-                                                                <div class="v1">Mediterranean
-                                                                    <span>17 Deal Offers</span></div>
-                                                                <div class="v2">Lorem ipsum dolor sit amet, concateus.
+                                                                <div class="v1"><span th:text="${scenic.name}"></span>
+                                                                    </div>
+                                                                <div>$<span th:text="${scenic.price}"></span></div>
+                                                                <div class="v2" th:text="${scenic.miaoshu}">
                                                                 </div>
                                                             </div>
                                                         </figure>
                                                         <div class="caption">
-                                                            <div class="txt1"><span th:text="${scenic.name}"></span>
-                                                            </div><span th:text="${scenic.price}"></span>
-                                                            <div class="txt2" th:text="${scenic.miaoshu}">
-                                                            </div>
                                                             <div class="txt3 clearfix">
                                                                 <div class="left_side">
                                                                     <div class="stars1">
@@ -258,10 +228,16 @@
                                                                              src="images/star1.png" alt="">
                                                                         <img th:src="@{/images/star1.png}"
                                                                              src="images/star1.png" alt="">
+                                                                        <img th:src="@{/images/star1.png}"
+                                                                             src="images/star1.png" alt="">
+                                                                        <img th:src="@{/images/star1.png}"
+                                                                             src="images/star1.png" alt="">
+                                                                        <img th:src="@{/images/star1.png}"
+                                                                             src="images/star1.png" alt="">
                                                                     </div>
-                                                                    <div class="nums">- 168 Reviews</div>
+                                                                    <div class="nums">评价</div>
                                                                 </div>
-                                                                <div class="right_side"><a th:href="@{'/travel/oneAttr?id='+${scenic.id}}" class="btn-default btn1">Detail</a></div>
+                                                                <div class="right_side"><a th:href="@{'/travel/oneAttr?id='+${scenic.id}}" class="btn-default btn1">详情</a></div>
                                                             </div>
                                                         </div>
                                                     </div>
