@@ -264,4 +264,14 @@ public class UserService {
 
 	}
 
+	/**
+	 * 通过姓名查人
+	 * @param name
+	 * @return
+	 */
+	public  User findByName(String name){
+		User user = userDao.findByName(name);
+		return user;
+	}
+
 }

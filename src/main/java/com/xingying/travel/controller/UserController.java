@@ -5,7 +5,6 @@ import com.xingying.travel.common.Result;
 import com.xingying.travel.common.StatusCode;
 import com.xingying.travel.pojo.User;
 import com.xingying.travel.service.UserService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -132,7 +131,35 @@ public class UserController {
 		userService.update(user);
 		return new Result(true, StatusCode.OK, "修改成功");
 	}
-	
+
+	/**
+	 * 忘记密码
+	 * @param name
+	 * @param session
+	 * @return
+	 */
+
+	@RequestMapping(value = "/forgetchange", method = RequestMethod.POST, consumes = "application/json")
+	public Result fupdate(@RequestBody User user) {
+		String name = user.getName();
+		String email = user.getEmail();
+		String password = user.getPassword();
+
+		User us = userService.findByName(name);
+		if (us == null || !us.getEmail().equals(email)) {
+			return new Result(false, StatusCode.ERROR, "用户不存在或邮箱不匹配");
+		}
+
+		// 加密新密码
+		String encryptedPassword = encoder.encode(password);
+		us.setPassword(encryptedPassword);
+
+		// 更新用户密码
+		userService.update(us);
+
+		return new Result(true, StatusCode.OK, "密码重置成功");
+
+	}
 	/**
 	 * 删除
 	 * @param id
@@ -219,21 +246,29 @@ public class UserController {
 	}
 
 
-
-
-
 	/**
 	 * 用户登录
 	 * @param loginMap
+	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/login",method=RequestMethod.POST)
-	public Result login(@RequestBody Map<String,String> loginMap,HttpServletRequest request){
-		  String mobile = loginMap.get("login");
-		  System.out.println("打印手机号：--->"+mobile);
-		  //手机号正则，判断输入是否为手机号
-		  String ph = "^[1][3578]\\d{9}$";
-		  System.out.println("正则---->"+mobile.matches(ph));
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public Result login(@RequestBody Map<String, String> loginMap, HttpServletRequest request) {
+		String mobile = loginMap.get("login");
+		System.out.println("打印手机号：--->"+mobile);
+		String password = loginMap.get("password");
+		String captchaInput = loginMap.get("vercode"); // 前端传来的验证码输入
+		System.out.println(captchaInput);
+
+		// 验证验证码
+		String captchaInSession = (String) request.getSession().getAttribute("verifyCode");
+		System.out.println(captchaInSession);
+		if (captchaInSession == null || !captchaInSession.equalsIgnoreCase(captchaInput)) {
+			return new Result(false, StatusCode.LOGINERROR, "验证码错误");
+		}
+
+		String ph = "^[1][3578]\\d{9}$";
+		System.out.println("正则---->"+mobile.matches(ph));
 		if (mobile.matches(ph)){
 			User user = userService.findByMobileAndPassword(loginMap.get("login"),loginMap.get("password"));
 			if(user!=null){
@@ -260,7 +295,9 @@ public class UserController {
 				return new Result(false,StatusCode.LOGINERROR,"用户名或密码错误");
 			}
 		}
+
 	}
+
 
 
 	/**

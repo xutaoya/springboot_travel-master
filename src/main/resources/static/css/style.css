@@ -47,6 +47,10 @@ body{ background: #fff;  border:0; font: 14px 'Raleway', Arial, Helvetica, sans-
 .visible {
 visibility: visible;
 }
+.link-danger {
+  color: red;
+}
+
 
 
 /* ============================= header ====================== */

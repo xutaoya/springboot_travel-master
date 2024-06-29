@@ -15,6 +15,6 @@ layui.define("form", function(e) {
         elemVercode: "#LAY-user-login-vercode",
     }), a.on("click", "#LAY-user-get-vercode", function() {
         s(this);
-        this.src = "https://www.oschina.net/action/user/captcha?t=" + (new Date).getTime()
+        this.src ="/code/getVerificationCodePhoto"
     }), e("user", {})
 });

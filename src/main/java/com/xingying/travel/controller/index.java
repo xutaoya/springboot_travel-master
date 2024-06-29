@@ -62,6 +62,8 @@ public class index {
     public String login(){
         return "user/login";
     }
+    @RequestMapping(value = "/userInfo")
+    public String userInfo(){return "user/userInfo";}
 
     @RequestMapping(value = "/register")
     public String register(){
@@ -107,11 +109,6 @@ public class index {
         return "page/travel";
     }
 
-//    @RequestMapping(value = "/foodt")
-//    public String foodt(Model model){
-//        model.addAttribute("foods",foodService.findAll());
-//        return "page/foodt";
-//    }
 
     @RequestMapping(value = "/hotels")
     public String hotels(Model model,@RequestParam(value = "start" ,defaultValue = "0")Integer start,
@@ -122,10 +119,10 @@ public class index {
         start=start<0?0:start;
         List<Sort.Order> sort=new ArrayList<>();
         if (star==3){
-            System.out.println("price asc star asc");
+            System.out.println("star asc star asc");
             sort.add(new Sort.Order(Sort.Direction.ASC,"star"));
         }else if (star==2){
-            System.out.println("price desc star desc");
+            System.out.println("star desc star desc");
             sort.add(new Sort.Order(Sort.Direction.DESC,"star"));
         }else if (price==2){
             System.out.println("price dsc star asc");
@@ -166,23 +163,6 @@ public class index {
         return "page/gallery";
     }
 
-//    @RequestMapping(value = "/map")
-//    public String map()
-//    {
-//        return "user/map";
-//    }
-
-    @RequestMapping(value = "/contacts")
-    public String contacts()
-    {
-        return "page/contacts";
-    }
-
-    @RequestMapping(value = "/about")
-    public String about()
-    {
-        return "page/about";
-    }
 
     @RequestMapping(value = "/product")
     public String product()

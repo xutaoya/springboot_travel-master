@@ -13,46 +13,52 @@
     <!-- Bootstrap 核心 JavaScript 文件 -->
     <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <!--jquery.validate-->
+<style>
+    .title1{
+        background:green;
 
+    }
+</style>
 </head>
 <body>
-<div>
-    <h5 style="float: left">修改资料></h5>
+<div >
+    <h1 style="text-align: center;color:white ; font-size:40px" class="title1">修改信息</h1>
 </div>
+<br>
+<br>
 <div class="container">
     <div class="form">
 
         <div>
             <form class="" id="login_form">
 
-                <div class="col-sm-9 col-md-9" style="margin:-30px 0 0 0">
+                <div class="col-sm-10 col-md-10" style="margin:-30px 0 0 0">
                     <h2></h2>
                     <div class="form-group">
                         <i class="fa fa-user fa-lg"></i>
-                        <input class="form-control required" th:value="${user.name}" type="text" placeholder="Username" id="user" name="username" autofocus="autofocus" maxlength="20"/>
+                        <input class="form-control required" th:value="${session.user.getName()}" type="text" placeholder="Username" id="user" name="username" autofocus="autofocus" maxlength="20"/>
                     </div>
                     <div class="form-group">
                         <i class="fa fa-user fa-lg"></i>
-                        <input class="form-control required" th:value="${user.sex}" type="text" id="sex" placeholder="Sex" name="username" autofocus="autofocus"/>
+                        <input class="form-control required"  type="text" id="sex" placeholder="Sex" name="sex" autofocus="autofocus"/>
                     </div>
                     <div class="form-group">
                         <i class="fa fa-user fa-lg"></i>
-                        <input class="form-control required" th:value="${user.age}" type="text" id="age" placeholder="Age" name="age"/>
+                        <input class="form-control required"  type="text" id="age" placeholder="Age" name="age"/>
                     </div>
                     <div class="form-group">
                         <i class="fa fa-phone fa-lg"></i>
-                        <input class="form-control required" th:value="${user.mobile}" type="text" id="phone" placeholder="Phone" name="age"/>
+                        <input class="form-control required"  type="text" id="phone" placeholder="Phone" name="phone"/>
                     </div>
                     <div class="form-group">
                         <i class="fa fa-envelope fa-lg"></i>
-                        <input class="form-control eamil" th:value="${user.email}" type="text" id="email" placeholder="Email" name="email"/>
+                        <input class="form-control eamil"  type="text" id="email" placeholder="Email" name="email"/>
                     </div>
 
                     <br>
                     <div class="form-group">
                         <input type="submit" class="btn btn-success btn-xm btn-block" id="change" value="修改"/>
                     </div>
-
 
                 </div>
             </form>
@@ -63,6 +69,9 @@
 
 
 <script>
+    $(document).ready(function(){
+        inf();
+    });
     $(function () {
         $("#change").click(function () {
             var name=$("#user").val()
@@ -91,6 +100,25 @@
 
         })
     })
+    function inf() {
+        $.ajax({
+            type: "post",
+            url: "/dist/info",
+            contentType: "application/json",
+            dataType:"JSON",
+            success:function(result){
+                $("#sex").val(result.sex)
+                $("#email").val(result.email)
+                $("#age").val(result.age)
+                $("#phone").val(result.mobile)
+                $("#editModal").modal('show');
+
+            },
+            error:function () {
+                alert('请求失败！');
+            }
+        })
+    }
 
 
 </script>
