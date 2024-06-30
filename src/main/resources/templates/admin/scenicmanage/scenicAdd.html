@@ -55,7 +55,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">出发日期</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="startdate" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                                <input type="text" name="startdate" id="date" lay-verify="date" placeholder="年/月/日" autocomplete="off" class="layui-input">
                             </div>
                         </div>
 
@@ -106,7 +106,6 @@
             elem: '#test1'
             ,url: '/uploadFile'
             ,before: function(obj){
-                //预读本地文件示例，不支持ie8
                 obj.preview(function(index, file, result){
                     $('#demo1').attr('src', result); //图片链接（base64）
                 });
@@ -143,11 +142,11 @@
 
                         //登入成功的提示
                         layer.msg(
-                            result.message,{
+                            result.msg,{
                                 icon: 1
                             });
                     } else {
-                        layer.msg(result.message, {
+                        layer.msg(result.msg, {
                             icon: 5
                         });
                     }

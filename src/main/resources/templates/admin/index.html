@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8"/>
-	<title>立知行后台管理系统</title>
+	<title>打败携程后台管理系统</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minum-scale=1.0, maxum-scale=1.0, user-scalable=0">
@@ -26,7 +26,7 @@
 					</a>
 				</li>
 				<li class="layui-nav-item layui-hide-xs" lay-unselect>
-					<a href="http://localhost:8080/dist/view" target="_blank" title="前台">
+					<a href="http://localhost:8080/dist/view" target="_blank" title="跳转到前台">
 						<i class="layui-icon layui-icon-website"></i>
 					</a>
 				</li>
@@ -39,11 +39,11 @@
 			<ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
 
 				<li class="layui-nav-item layui-hide-xs" lay-unselect>
-					<a href="javascript:;" layadmin-event="theme">
+					<a href="javascript:;" layadmin-event="theme" title="更换主题">
 						<i class="layui-icon layui-icon-theme"></i>
 					</a>
 				</li>
-				<li class="layui-nav-item layui-hide-xs" lay-unselect>
+				<li class="layui-nav-item layui-hide-xs" lay-unselect title="便签">
 					<a href="javascript:;" layadmin-event="note">
 						<i class="layui-icon layui-icon-note"></i>
 					</a>
@@ -54,7 +54,6 @@
 					</a>
 					<dl class="layui-nav-child">
 						<dd>
-							<!--<a th:href="@{/admin/passwd}">修改密码</a>-->
 							<div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
 								<a data-method="offset" data-type="auto" id="passwd" href="#">修改密码</a>
 							</div>
@@ -66,9 +65,6 @@
 					</dl>
 				</li>
 
-<!--				<li class="layui-nav-item layui-hide-xs" lay-unselect>-->
-<!--				<a href="javascript:;" layadmin-event="about"><i class="layui-icon layui-icon-more-vertical"></i></a>-->
-<!--			</li>-->
 				<li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
 					<a href="javascript:;" layadmin-event="more"><i class="layui-icon layui-icon-more-vertical"></i></a>
 				</li>
@@ -79,7 +75,7 @@
 		<div class="layui-side layui-side-menu">
 			<div class="layui-side-scroll">
 				<div class="layui-logo" lay-href="/admin/echars">
-					<span>立知行后台管理</span>
+					<span>打败携程后台管理</span>
 				</div>
 
 				<ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
@@ -89,8 +85,8 @@
 							<cite>主页</cite>
 						</a>
 						<dl class="layui-nav-child">
-							<dd data-name="console" class="layui-this">
-								<a lay-href="/admin/echars">控制台</a>
+							<dd data-name="teline">
+								<a lay-href="/admin/echars">统计</a>
 							</dd>
 						</dl>
 					</li>
@@ -122,9 +118,6 @@
 									</dd>
 								</dl>
 							</dd>
-<!--							<dd>-->
-<!--								<a lay-href="http://weather.com">天气预报</a>-->
-<!--							</dd>-->
 						</dl>
 					</li>
 
@@ -247,9 +240,6 @@
 				<iframe src="/admin/echars" frameborder="0" class="layadmin-iframe"></iframe>
 			</div>
 		</div>
-
-		<!-- 辅助元素，一般用于移动设备下遮罩 -->
-		<div class="layadmin-body-shade" layadmin-event="shade"></div>
 	</div>
 </div>
 
@@ -264,8 +254,8 @@
 
 
 
-    layui.use('layer', function(){ //独立版的layer无需执行这一句
-        var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+    layui.use('layer', function(){
+        var $ = layui.jquery, layer = layui.layer;
 
         //触发事件
         var active = {
@@ -311,7 +301,11 @@
                                 type:'post',
 								success:function (data) {
                                     if (data.code==0){
-                                        alert("修改成功！")
+										layer.msg('修改成功', {
+											offset: '15px',
+											icon: 1,
+											time: 1000
+										})
 									}else if (data.code==201) {
                                         alert("原密码输入错误！")
 									}else {

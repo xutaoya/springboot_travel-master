@@ -19,17 +19,6 @@
                 <div class="layui-card-header">景点列表</div>
                 <div class="layui-card-body">
 
-                    <!--<form class="layui-form">-->
-                        <!--<div class="layui-input-inline">-->
-                            <!--<input type="tel" name="searContent" autocomplete="off"-->
-                                   <!--placeholder="输入景点名字" class="layui-input">-->
-                        <!--</div>-->
-                        <!--<div class="layui-input-inline " style="width: 90px">-->
-                            <!--<button class="layui-btn" id="searchEmailCompany" data-type="reload">-->
-                                <!--<i class="layui-icon" style="font-size: 20px; "></i> 搜索-->
-                            <!--</button>-->
-                        <!--</div>-->
-                    <!--</form>-->
 
 
                     <table class="layui-hide" id="test-table-reload" lay-filter="test-table-reload"></table>
@@ -157,9 +146,9 @@
                             contentType: "application/json;charset=utf-8",
                             success: function(result) {
                                 if(result.code == 0) {
-                                    layer.msg(result.message,{icon: 1});
+                                    layer.msg(result.msg,{icon: 1});
                                 } else {
-                                    layer.msg(result.message, {
+                                    layer.msg(result.msg, {
                                         icon: 5
                                     });
                                 }
@@ -185,33 +174,6 @@
                 });
             }
         });
-
-        // // 点击获取数据
-        // var  active = {
-        //     getInfo: function () {
-        //                var fileName=$('#test-table-demoReload').val();
-        //                // var startTime=$('#startTime').val();
-        //                // var endTime=$('#endTime').val();
-        //                if ($('#fileName').val()) {
-        //                      var index = layer.msg('查询中，请稍候...',{icon: 16,time:false,shade:0});
-        //                      setTimeout(function(){
-        //                          table.reload('flinklist', {
-        //                             where: {
-        //                                 'fileName':fileName,
-        //                                 'timeRange':timeRange
-        //                             }
-        //                          });
-        //                         layer.close(index);
-        //                      },800);
-        //                  } else {
-        //                      table.reload('flinklist', {where: {
-        //                             'fileName':fileName,
-        //                             'timeRange':timeRange
-        //                        }});
-        //                   table.reload('')
-        //                 }
-        //             },
-        //     };
 
 
         //搜索加载--数据表格重载

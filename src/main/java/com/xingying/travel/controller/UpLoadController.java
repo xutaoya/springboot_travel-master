@@ -16,6 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,41 +50,47 @@ public class UpLoadController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/uploadFile",method = RequestMethod.POST)
-    public Result uploadimg(@RequestParam("file") MultipartFile file){
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    public Result uploadimg(@RequestParam("file") MultipartFile file) {
 
-        logger.info("文件上传");
-        String FileName = file.getOriginalFilename();
-        System.out.println(FileName);
-   try {
-      if (file != null){
-        if (!"".equals(FileName.trim())) {
-            /*File newFile = new File(FileName);
-            FileOutputStream outputStream = new FileOutputStream(newFile);
-            outputStream.write(file.getBytes());
-            outputStream.close();
-            file.transferTo(newFile);*/
+        logger.info("文件上传开始");
+        String fileName = file.getOriginalFilename();
+        logger.info("上传的文件名: {}", fileName);
 
-            String dirPath = "D:/javacode/SpringBoot/springboot_travel-master/springboot_travel-master/src/main/resources/static/images";
-            File filePath = new File(dirPath);
+        if (file == null || fileName == null || fileName.trim().isEmpty()) {
+            return new Result(false, StatusCode.ERROR, "文件为空，上传失败");
+        }
 
-            if(!filePath.exists()){filePath.mkdirs();}
-            try {
-                System.err.println("file");
-                redisTemplate.opsForValue().set("scenic" , FileName, 1 , TimeUnit.HOURS);
-                redisTemplate.opsForValue().set("gallery" , FileName, 1 , TimeUnit.HOURS);
-                redisTemplate.opsForValue().set("hotel" , FileName, 1 , TimeUnit.HOURS);
-                redisTemplate.opsForValue().set("food" , FileName, 1 , TimeUnit.HOURS);
-                redisTemplate.opsForValue().set("strategy" , FileName, 1 , TimeUnit.HOURS);
-                file.transferTo(new File(dirPath+FileName));
-            } catch (Exception e) {e.printStackTrace();}
-            // 上传到OSS
-            //ossUtil.upLoad(newFile);
-            }
-         }
-      }catch (Exception e){
-       e.printStackTrace();
-     }
-          return new Result(true, StatusCode.OK,"上传成功");
-   }
+        String dirPath = "D:" + File.separator + "javacode" + File.separator + "SpringBoot" + File.separator
+                + "springboot_travel-master" + File.separator + "springboot_travel-master" + File.separator
+                + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static"
+                + File.separator + "images" + File.separator;
+        File filePath = new File(dirPath);
+
+        if (!filePath.exists()) {
+            filePath.mkdirs();
+        }
+
+        try {
+            logger.info("正在保存文件到路径: {}", dirPath + fileName);
+            file.transferTo(new File(dirPath + fileName));
+
+            logger.info("正在将文件名保存到 Redis 中");
+            redisTemplate.opsForValue().set("scenic", fileName, 1, TimeUnit.HOURS);
+            redisTemplate.opsForValue().set("gallery", fileName, 1, TimeUnit.HOURS);
+            redisTemplate.opsForValue().set("hotel", fileName, 1, TimeUnit.HOURS);
+            redisTemplate.opsForValue().set("food", fileName, 1, TimeUnit.HOURS);
+            redisTemplate.opsForValue().set("strategy", fileName, 1, TimeUnit.HOURS);
+
+            logger.info("文件上传成功");
+            return new Result(true, StatusCode.OK, "上传成功");
+        } catch (IOException e) {
+            logger.error("文件保存失败", e);
+            return new Result(false, StatusCode.ERROR, "文件保存失败");
+        } catch (Exception e) {
+            logger.error("文件上传过程中出现异常", e);
+            return new Result(false, StatusCode.ERROR, "文件上传失败");
+        }
+    }
+
 }

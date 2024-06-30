@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -18,13 +19,21 @@
                 <div class="layui-card-header">用户列表</div>
                 <div class="layui-card-body">
 
-                    <!--<div class="test-table-reload-btn" style="margin-bottom: 10px;">-->
-                        <!--搜索姓名：-->
-                        <!--<div class="layui-inline">-->
-                            <!--<input class="layui-input" name="id" id="test-table-demoReload" autocomplete="off">-->
-                        <!--</div>-->
-                        <!--<button class="layui-btn" data-type="reload">搜索</button>-->
-                    <!--</div>-->
+<!--                    <div class="test-table-reload-btn" style="margin-bottom: 10px;">-->
+<!--                    搜索姓名：-->
+<!--                    <div class="layui-inline">-->
+<!--                    <input class="layui-input" name="username" id="username" autocomplete="off">-->
+<!--                    </div>-->
+<!--                        搜索id:-->
+<!--                        <div class="layui-inline">-->
+<!--                            <input class="layui-input" name="userid" id="userid" autocomplete="off">-->
+<!--                        </div>-->
+<!--                        搜索邮件：-->
+<!--                        <div class="layui-inline">-->
+<!--                            <input class="layui-input" name="useremail" id="useremail" autocomplete="off">-->
+<!--                        </div>-->
+<!--                    <button class="layui-btn" data-type="reload">搜索</button>-->
+<!--                    </div>-->
 
                     <table class="layui-hide" id="test-table-reload" lay-filter="test-table-reload"></table>
 
@@ -40,6 +49,8 @@
 
 <script th:src="@{/layuiadmin/layui/layui.js}"></script>
 <script>
+
+
     layui.use('table', function(){
         var table = layui.table;
         //方法级渲染
@@ -48,15 +59,15 @@
             ,url: 'http://localhost:8080/user'
             ,cols: [
                 [
-                {checkbox: true, fixed: true}
-                ,{field:'id', title: 'ID', width:220, sort: true, align:'center'}
-                ,{field:'name', title: '用户名', width:200, align:'center'}
-                ,{field:'sex', title: '性别', width:100, align:'center'}
-                ,{field:'age', title: '年龄', width:100,sort: true, align:'center'}
-                ,{field:'mobile', title: '手机',width:200,sort: true, align:'center'}
-                ,{field:'email', title: '邮箱', width:200, align:'center'}
-                ,{width:165, title:'操作', align:'center', toolbar: '#barlist'}
-              ]
+                    {checkbox: true, fixed: true}
+                    ,{field:'id', title: 'ID', width:220, sort: true, align:'center'}
+                    ,{field:'name', title: '用户名', width:200, align:'center'}
+                    ,{field:'sex', title: '性别', width:100, align:'center'}
+                    ,{field:'age', title: '年龄', width:100,sort: true, align:'center'}
+                    ,{field:'mobile', title: '手机',width:200,sort: true, align:'center'}
+                    ,{field:'email', title: '邮箱', width:200, align:'center'}
+                    ,{width:165, title:'操作', align:'center', toolbar: '#barlist'}
+                ]
             ]
             ,page: true
             ,height: 470
@@ -88,7 +99,6 @@
                     layer.close(index);
                 });
             } else if(obj.event === 'edit'){
-            //    layer.alert('编辑行：<br>'+ JSON.stringify(data))
                 layer.confirm('<div class="layui-form-item">\n' +
                     '    <label class="layui-form-label">姓名</label>\n' +
                     '    <div class="layui-input-block">\n' +

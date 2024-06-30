@@ -58,13 +58,26 @@ public class index {
         return "page/index";
     }
 
+    /**
+     * 登录跳转
+     * @return
+     */
     @RequestMapping(value = "/login")
     public String login(){
         return "user/login";
     }
+
+    /**
+     * 用户编辑跳转
+     * @return
+     */
     @RequestMapping(value = "/userInfo")
     public String userInfo(){return "user/userInfo";}
 
+    /**
+     * 注册跳转
+     * @return
+     */
     @RequestMapping(value = "/register")
     public String register(){
         return "user/register";

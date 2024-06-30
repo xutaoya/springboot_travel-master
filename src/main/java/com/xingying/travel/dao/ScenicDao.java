@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.xingying.travel.pojo.Scenic;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +19,5 @@ public interface ScenicDao extends JpaRepository<Scenic,String>,JpaSpecification
 
 
     List<Scenic> findByContryLike(String name);
-
 
 }

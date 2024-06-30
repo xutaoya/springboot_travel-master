@@ -138,7 +138,7 @@ public class ScenicService {
                 if (searchMap.get("name")!=null && !"".equals(searchMap.get("name"))) {
                 	predicateList.add(cb.like(root.get("name").as(String.class), "%"+(String)searchMap.get("name")+"%"));
                 }
-				
+
 				return cb.and( predicateList.toArray(new Predicate[predicateList.size()]));
 
 			}

@@ -3,20 +3,27 @@ package com.xingying.travel.controller.admin;
 import com.xingying.travel.common.PageResult;
 import com.xingying.travel.common.Result;
 import com.xingying.travel.common.StatusCode;
+import com.xingying.travel.dao.HotelDao;
 import com.xingying.travel.dao.ScenicDao;
 import com.xingying.travel.pojo.Hotel;
 import com.xingying.travel.pojo.Scenic;
 import com.xingying.travel.service.HotelService;
 import com.xingying.travel.service.ScenicService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.*;
 
 /**
@@ -34,7 +41,8 @@ public class HotelController {
 
 	@Autowired
 	private ScenicService scenicService;
-
+    @Autowired
+    private HotelDao hotelDao;
 
 
 	/**
@@ -85,6 +93,36 @@ public class HotelController {
 		return  new Result(true,StatusCode.OK,"查询成功",  new PageResult<Hotel>(pageList.getTotalElements(), pageList.getContent()) );
 	}
 
+	@RequestMapping("/search_attrs")
+	public String search_attrs(Model model,@RequestParam(value = "start" ,defaultValue = "0")Integer start,
+							   @RequestParam(value = "limit" ,defaultValue = "6")Integer limit,
+							   @RequestParam String search_key){
+		start=start<0?0:start;
+		Sort sort=new Sort(Sort.Direction.DESC,"id");
+		Pageable pageable=PageRequest.of(start,limit,sort);
+		Specification specification=new Specification() {
+			@Override
+			public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+				List<Predicate> scenics=new ArrayList<>();
+				if (StringUtils.isNotBlank(search_key)){
+					scenics.add( criteriaBuilder.like(root.get("name"),"%"+search_key+"%"));
+				}
+				return criteriaBuilder.and(scenics.toArray(new Predicate[scenics.size()]));
+			}
+		};
+		Page<Scenic> page=hotelDao.findAll(specification,pageable);
+
+		model.addAttribute("attrs",page);
+		model.addAttribute("number",page.getNumber());
+		model.addAttribute("numberOfElements",page.getNumberOfElements());
+		model.addAttribute("size",page.getSize());
+		model.addAttribute("totalElements",page.getTotalElements());
+		model.addAttribute("totalPages",page.getTotalPages());
+		model.addAttribute("first",page.isFirst());
+		model.addAttribute("last",page.isLast());
+		return "page/hotels";
+	}
+
 	/**
      * 根据条件查询
      * @param searchMap
@@ -93,6 +131,7 @@ public class HotelController {
 	@ResponseBody
     @RequestMapping(value="/search",method = RequestMethod.POST)
     public Result findSearch( @RequestBody Map searchMap){
+		System.out.println(hotelService.findSearch(searchMap));
         return new Result(true,StatusCode.OK,"查询成功",hotelService.findSearch(searchMap));
     }
 

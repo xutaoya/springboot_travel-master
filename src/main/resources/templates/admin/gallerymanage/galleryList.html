@@ -18,9 +18,6 @@
         <div class="layui-inline">
             <a class="layui-btn layui-btn-sm layui-btn-danger batchDel">批量删除</a>
         </div>
-        <!--<div class="layui-inline">-->
-            <!--<a class="layui-btn layui-btn-sm" href="galleryAdd">上传新图片</a>-->
-        <!--</div>-->
     </blockquote>
     <ul class="img-responsive2" id="Images"></ul>
 </form>
@@ -35,7 +32,7 @@
             layer = parent.layer === undefined ? layui.layer : top.layer,
             $ = layui.jquery;
 
-//流加载图片
+        //流加载图片
         var imgNums = 15;  //单页显示图片数量
         flow.load({
             elem: '#Images', //流加载容器
@@ -51,7 +48,7 @@
                                 '<div class="operate"><div class="check">' +
                                 '<input type="checkbox" name="belle" lay-filter="choose" lay-skin="primary" title="' + data[i].title + '">' +
                                 '</div>' +
-                                '<i class="layui-icon img_del">&#xe640;</i>' +
+                                '<i class="layui-icon img_del" data-id="' + data[i].id + '">&#xe640;</i>' +
                                 '</div>' +
                                 '</li>');
                         }
@@ -62,16 +59,17 @@
             }
         });
 
-         //设置图片的高度
+        //设置图片的高度
         $(window).resize(function () {
             $("#Images li img").height($("#Images li img").width());
         })
 
 
         //删除单张图片
-        $("body").on("click", ".img_del", function (obj) {
-            var data = obj.data;
+        $("body").on("click", ".img_del", function () {
             var _this = $(this);
+            var id = _this.data("id");
+
             layer.confirm('确定删除图片"' + _this.siblings().find("input").attr("title") + '"吗？', {
                 icon: 3,
                 title: '提示信息'
@@ -81,26 +79,26 @@
                     _this.parents("li").remove();
                 }, 950);
                 layer.close(index);
-            });
-            $.ajax({
-                type: "DELETE",
-                url: "/gallery/"+ data.id ,
-                data: {"id": data.id},
-                dataType: "json",
-                contentType: "application/json;charset=utf-8",
-                success: function(result) {
-                    if(result.code == 0) {
-                        layer.msg(result.message,{icon: 1});
-                    } else {
-                        layer.msg(result.message, {
-                            icon: 5
-                        });
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "/gallery/delete/" + id,
+                    dataType: "json",
+                    success: function(result) {
+                        if(result.code == 0) {
+                            layer.msg(result.msg, {icon: 1});
+                        } else {
+                            layer.msg(result.msg, {icon: 5});
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("删除请求失败:", error);
+                        layer.msg("删除失败，请稍后重试", {icon: 5});
                     }
-                }
+                });
             });
+        });
 
-
-        })
 
            //全选
         form.on('checkbox(selectAll)', function (data) {
@@ -123,31 +121,57 @@
             form.render('checkbox');
         })
 
-           //批量删除
+        // 批量删除
         $(".batchDel").click(function () {
             var $checkbox = $('#Images li input[type="checkbox"]');
             var $checked = $('#Images li input[type="checkbox"]:checked');
             if ($checkbox.is(":checked")) {
                 layer.confirm('确定删除选中的图片？', {icon: 3, title: '提示信息'}, function (index) {
-                    var index = layer.msg('删除中，请稍候', {icon: 16, time: false, shade: 0.8});
+                    var loadingIndex = layer.msg('删除中，请稍候', {icon: 16, time: false, shade: 0.8});
                     setTimeout(function () {
-                       //删除数据
+                        // 收集所有选中图片的 ID
+                        var ids = [];
                         $checked.each(function () {
-                            $(this).parents("li").hide(1000);
-                            setTimeout(function () {
-                                $(this).parents("li").remove();
-                            }, 950);
-                        })
-                        $('#Images li input[type="checkbox"],#selectAll').prop("checked", false);
-                        form.render();
-                        layer.close(index);
-                        layer.msg("删除成功");
+                            var id = $(this).closest('li').find('i.img_del').data('id'); // 确保正确获取 data-id 属性
+                            ids.push(id);
+                        });
+
+                        // 发出 AJAX 请求删除服务器上的图片
+                        $.ajax({
+                            type: "POST",
+                            url: "/gallery/batchDelete",
+                            contentType: "application/json;charset=utf-8",
+                            data: JSON.stringify({ids: ids}),
+                            dataType: "json",
+                            success: function (result) {
+                                if (result.code == 0) {
+                                    $checked.each(function () {
+                                        $(this).parents("li").hide(1000);
+                                        setTimeout(function () {
+                                            $(this).parents("li").remove();
+                                        }.bind(this), 950);
+                                    });
+
+                                    $('#Images li input[type="checkbox"],#selectAll').prop("checked", false);
+                                    form.render();
+                                    layer.close(loadingIndex);
+                                    layer.msg("删除成功");
+                                } else {
+                                    layer.msg(result.msg, {icon: 5});
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("批量删除请求失败:", error);
+                                layer.close(loadingIndex);
+                                layer.msg("删除失败，请稍后重试", {icon: 5});
+                            }
+                        });
                     }, 2000);
-                })
+                });
             } else {
                 layer.msg("请选择需要删除的图片");
             }
-        })
+        });
 
     })
 </script>

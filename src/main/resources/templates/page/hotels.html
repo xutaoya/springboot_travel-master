@@ -42,45 +42,25 @@
                 </div>
                 <div class="tabs_content tabs1_content">
                     <div id="tabs-2">
-                        <form action="javascript:;" class="form1">
+                        <form th:action="@{/hotel/search_attrs}" id="uploadForm" name="uploadForm" class="form1" method="POST">
                             <div class="row">
-                                <div class="col-sm-4 col-md-4">
-                                    <div class="select1_wrapper">
-                                        <label>城市或者酒店名称:</label>
-                                        <div class="select1_inner">
-                                            <select class="select2 select" style="width: 100%">
-                                                <option value="1">输入地点和酒店名称</option>
-                                            </select>
-                                        </div>
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <label>请输入酒店名称</label>
+                                        <input class="form-control" placeholder="请输入酒店名称" name="search_key"/>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 col-md-2">
-                                    <div class="input1_wrapper">
-                                        <label>入住时间:</label>
-                                        <div class="input1_inner">
-                                            <input type="text" class="input datepicker" value="年/月/日">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-md-2">
-                                    <div class="input1_wrapper">
-                                        <label>退房时间:</label>
-                                        <div class="input1_inner">
-                                            <input type="text" class="input datepicker" value="年/月/日">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-md-2">
+                                <div class="col-sm-3 col-md-2">
                                     <div class="button1_wrapper">
                                         <button type="submit" class="btn-default btn-form1-submit">查询</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
                         <div class="row">
-                            <div class="col-sm-3">
-
-
+                            <div class="col-sm-3.5">
                                 <div class="sm_slider sm_slider2">
                                     <a class="sm_slider_prev" href="#"></a>
                                     <a class="sm_slider_next" href="#"></a>
@@ -91,16 +71,23 @@
                                                     <ul>
                                                         <li>
                                                             <div class="sm_slider_inner">
-                                                                <div class="txt1">这真是一次酣畅淋漓的旅行啊
+                                                                <div class="txt1">提供舒服的酒店环境
                                                                 </div>
-                                                                <div class="txt2">张三</div>
+                                                                <text>就选daibaixiecheng旅游网</text>
                                                             </div>
                                                         </li>
                                                         <li>
                                                             <div class="sm_slider_inner">
-                                                                <div class="txt1">我太爱这次旅行了
+                                                                <div class="txt1">选我们就对了
                                                                 </div>
-                                                                <div class="txt2">李华</div>
+                                                                <text>住着舒服安心，幸福</text>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="sm_slider_inner">
+                                                                <div class="txt1">只提供最好的服务
+                                                                </div>
+                                                                <text>打败市面上99%的住宿</text>
                                                             </div>
                                                         </li>
                                                     </ul>
@@ -110,9 +97,8 @@
                                     </div>
                                 </div>
 
-
                             </div>
-                            <div class="col-sm-9">
+                            <div class="col-sm-12">
 
                                 <form action="javascript:;" class="form3 clearfix">
                                     <div class="select1_wrapper txt">
@@ -138,7 +124,8 @@
                                     </div>
                                 </form>
 
-                                <div class="row">
+                                <div  class="row" id="table_refresh" th:fragment="table_refresh">
+
                                     <div class="col-sm-4" th:each="attr:${attrs}">
                                         <div class="thumb5">
                                             <div class="thumbnail clearfix">
@@ -172,20 +159,13 @@
                                             <li class="next"><a th:if="${not last}" th:href="@{/dist/hotels(start=${number+1})}">下一页</a></li>
                                         </ul>
                                     </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                        </div>
-                    </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <!--底部-->
 <div th:include="common/index_footer :: copyfooter"></div>
@@ -193,8 +173,8 @@
 
 </body>
 
-
-<script type="text/javascript" th:inline="javascript">
+<script th:src="@{/layuiadmin/layui/layui.js}"></script>
+<script th:inline="javascript">
     //创建和初始化地图函数：
     function initMap(){
         createMap();//创建地图
@@ -234,7 +214,49 @@
 
     initMap();//创建和初始化地图
 
+var pageNumber=[[${number}]];
+var first=[[${first}]];
+var last=[[${last}]];
+var totalPages=[[${totalPages}]]
+var html='<li class="active"><a th:if="${not first}" th:href="@{/dist/hotels(start=${number-1})}">Previous</a>&nbsp;&nbsp;';
 
+var bo="";
+/*<![CDATA[*/
+/*for (var i=2;i<=totalPages;i++){
+   // bo+='<li class="li"><a href="" onclick="page(i)">'+i+'</a>&nbsp;&nbsp;';
+}*/
+/*]]>*/
+html=html+bo+'<li class="next"><li class="active"><a th:if="${not last}" th:href="@{/dist/hotels(start=${number+1})}">Next</a>&nbsp;&nbsp;'
+
+
+$(function() {
+    var currentPage = 1;
+    var totalPages = 2;
+    $("#page").bootstrapPaginator({
+        bootstrapMajorVersion: 3, //对应的bootstrap版本
+        currentPage: currentPage, //当前页数
+        numberOfPages: 10, //每次显示页数
+        totalPages: totalPages, //总页数
+        shouldShowPage: true, //是否显示该按钮
+        useBootstrapTooltip: true,
+        onPageClicked: function(event, originalEvent, type, page) {
+            console.log(page);
+        }
+    });
+});
+
+
+$(function () {
+    var price=[[${price}]]
+    var star=[[${star}]]
+    console.log(price+"=-=-="+star)
+    if(price==3){
+        $("#price").find("option:contains('由低到高')").attr("selectd",true)
+
+    }else if (price==2){
+        $("#price").find("option:contains('由高到低')").attr("selectd",true)
+    }
+})
     function test() {
         var price1=[[${price}]]
         var star1=[[${star}]]

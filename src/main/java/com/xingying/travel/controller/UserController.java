@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -41,6 +42,8 @@ public class UserController {
 	@Autowired
     BCryptPasswordEncoder encoder;
 
+
+
     /**
      * 查询全部数据
      *
@@ -62,6 +65,17 @@ public class UserController {
         return new Result(true, StatusCode.OK, "查询成功", userService.findById(id));
     }
 
+	/**
+	 * 条件查询
+	 *
+	 * @param searchMap 查询条件
+	 * @return
+	 */
+	@RequestMapping(value = "/find1", method = RequestMethod.POST)
+	public Result find1(@RequestBody Map searchMap) {
+		List<User> users = userService.findSearch(searchMap);
+		return new Result(true, StatusCode.OK, "查询成功", users);
+	}
 
 	/**
 	 * 分页+多条件查询
