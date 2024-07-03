@@ -78,9 +78,9 @@
                         contentType: "application/json;charset=utf-8",
                         success: function(result) {
                             if(result.code == 0) {
-                                layer.msg(result.message,{icon: 1});
+                                layer.msg(result.msg,{icon: 1});
                             } else {
-                                layer.msg(result.message, {
+                                layer.msg(result.msg, {
                                     icon: 5
                                 });
                             }
