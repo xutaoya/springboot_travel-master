@@ -123,18 +123,6 @@ public class HotelController {
 		return "page/hotels";
 	}
 
-	/**
-     * 根据条件查询
-     * @param searchMap
-     * @return
-     */
-	@ResponseBody
-    @RequestMapping(value="/search",method = RequestMethod.POST)
-    public Result findSearch( @RequestBody Map searchMap){
-		System.out.println(hotelService.findSearch(searchMap));
-        return new Result(true,StatusCode.OK,"查询成功",hotelService.findSearch(searchMap));
-    }
-
 
 	/**
 	 * 修改

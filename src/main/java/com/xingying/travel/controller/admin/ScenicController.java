@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
+
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -35,6 +36,7 @@ public class ScenicController {
 	@ResponseBody
 	@RequestMapping(method= RequestMethod.GET)
 	public Result findAll(){
+
 		return new Result(true, StatusCode.OK,"查询成功",scenicService.findAll());
 	}
 	
@@ -58,11 +60,17 @@ public class ScenicController {
 	 * @return 分页结果
 	 */
 	@ResponseBody
-	@RequestMapping(value="/search/{page}/{size}",method=RequestMethod.POST)
-	public Result findSearch(@RequestBody Map searchMap , @PathVariable int page, @PathVariable int size){
+	@RequestMapping(value="/search/{page}/{size}", method=RequestMethod.POST, consumes="application/json")
+	public Map<String, Object> findSearch(@RequestBody Map<String, Object> searchMap, @PathVariable int page, @PathVariable int size){
 		Page<Scenic> pageList = scenicService.findSearch(searchMap, page, size);
-		return  new Result(true,StatusCode.OK,"查询成功",  new PageResult<Scenic>(pageList.getTotalElements(), pageList.getContent()) );
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 0); // 状态码
+		result.put("msg", "查询成功"); // 提示消息
+		result.put("count", pageList.getTotalElements()); // 数据总数
+		result.put("data", pageList.getContent()); // 数据列表
+		return result;
 	}
+
 
 
 	/**

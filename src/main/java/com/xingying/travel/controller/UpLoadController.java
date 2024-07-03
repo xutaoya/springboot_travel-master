@@ -67,7 +67,7 @@ public class UpLoadController {
                 + File.separator + "images" + File.separator;
         File filePath = new File(dirPath);
 
-        if (!filePath.exists()) {
+        if (!filePath.exists()) {http://localhost:8080/dist/login
             filePath.mkdirs();
         }
 

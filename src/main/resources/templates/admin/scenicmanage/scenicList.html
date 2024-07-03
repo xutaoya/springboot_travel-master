@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -129,31 +130,31 @@
                     '      <input type="text" name="contry" id="contry" required  lay-verify="required" value="'+data.contry+'" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
                     '    </div>\n' +
                     '  </div>',{btn:['确定','取消']},function (index,layero) {
-                        var title=$("#title").val()
-                        var price=$("#price").val()
-                        var miaoshu=$("#miaoshu").val()
-                        var comment=$("#comment").val()
-                        var stock=$("#stock").val()
-                        var start=$("#start").val()
-                        var contry=$("#contry").val()
-                        console.log("====--==="+title+'\n'+price+'\n'+miaoshu+'\n'+comment+'\n'+stock+'\n'+start+'\n'+contry)
+                    var title=$("#title").val()
+                    var price=$("#price").val()
+                    var miaoshu=$("#miaoshu").val()
+                    var comment=$("#comment").val()
+                    var stock=$("#stock").val()
+                    var start=$("#start").val()
+                    var contry=$("#contry").val()
+                    console.log("====--==="+title+'\n'+price+'\n'+miaoshu+'\n'+comment+'\n'+stock+'\n'+start+'\n'+contry)
 
-                        $.ajax({
-                            type: "PUT",
-                            url: "/scenic/"+ data.id ,
-                            data: JSON.stringify({"name":title,"price":price,"miaoshu":miaoshu,"comment":comment,"stock":stock,"start":start,"contry":contry}),
-                            dataType: "json",
-                            contentType: "application/json;charset=utf-8",
-                            success: function(result) {
-                                if(result.code == 0) {
-                                    layer.msg(result.msg,{icon: 1});
-                                } else {
-                                    layer.msg(result.msg, {
-                                        icon: 5
-                                    });
-                                }
+                    $.ajax({
+                        type: "PUT",
+                        url: "/scenic/"+ data.id ,
+                        data: JSON.stringify({"name":title,"price":price,"miaoshu":miaoshu,"comment":comment,"stock":stock,"start":start,"contry":contry}),
+                        dataType: "json",
+                        contentType: "application/json;charset=utf-8",
+                        success: function(result) {
+                            if(result.code == 0) {
+                                layer.msg(result.msg,{icon: 1});
+                            } else {
+                                layer.msg(result.msg, {
+                                    icon: 5
+                                });
                             }
-                        });
+                        }
+                    });
                 })
             }else if(obj.event === 'setSign'){
                 layer.prompt({

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -102,10 +103,30 @@ public class FoodController {
 	 * @param id
 	 */
 	@ResponseBody
-	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
+	@RequestMapping(value="/delete/{id}",method= RequestMethod.DELETE)
 	public Result delete(@PathVariable String id ){
 		foodService.deleteById(id);
 		return new Result(true,StatusCode.OK,"删除成功");
+	}
+
+	/**
+	 * 批量删除
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/batchDelete", method = RequestMethod.POST)
+	public Result batchDelete(@RequestBody Map<String, List<String>> request) {
+		List<String> ids = request.get("ids");
+		System.out.println(ids);
+		try {
+			for (String id : ids) {
+				foodService.deleteById(id);
+			}
+			return new Result(true, StatusCode.OK, "删除成功");
+		} catch (Exception e) {
+			return new Result(false, StatusCode.ERROR, "删除失败");
+		}
 	}
 
 	/**
