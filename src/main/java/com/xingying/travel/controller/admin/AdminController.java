@@ -99,6 +99,7 @@ public class AdminController {
 		return new Result(true, StatusCode.OK, "增加成功");
 	}
 
+
 	/**
 	 * 修改
 	 *
@@ -186,6 +187,27 @@ public class AdminController {
 	@RequestMapping(value = "/echars")
 	public String analysis() {
 		return "admin/echars/console";
+	}
+
+	/**
+	 * 管理员注册
+	 * @return
+	 */
+	@RequestMapping(value="/register")
+	public String register() {return "admin/login/register";}
+
+	/**
+	 * 管理员注册
+	 * @param name
+	 * @param admin
+	 * @return
+	 */
+
+	@RequestMapping(value = "/adregister/{name}",method = RequestMethod.POST)
+	public Result regist(@PathVariable String name,@RequestBody Admin admin){
+
+		adminService.add(admin);
+		return new Result(true,StatusCode.OK,"注册成功");
 	}
 
 

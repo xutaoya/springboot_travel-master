@@ -168,10 +168,10 @@
             if(!field.agreement){
                 return layer.msg('你必须同意用户协议才能注册');
             }
-
+            console.log("Form Data: ", field);
             $.ajax({
                 type: "POST",
-                url: "/user/register/"+obj.field.code,
+                url: "/user/register/"+obj.field.name,
                 data: JSON.stringify(obj.field),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",

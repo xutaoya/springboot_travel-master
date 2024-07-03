@@ -28,7 +28,10 @@ public class MyConfig implements WebMvcConfigurer {
         registry.addInterceptor(interceptorConfig)
                 .addPathPatterns("/admin/**") // 拦截 /admin/** 下的所有请求
                 .excludePathPatterns("/admin/login") //排除 /admin/login 路径
-                .excludePathPatterns("/admin/adminlogin");// 排除 /admin/adminlogin 路径
+                .excludePathPatterns("/admin/adminlogin")// 排除 /admin/adminlogin 路径
+                .excludePathPatterns("/admin/register")
+                .excludePathPatterns("/admin/adregister/*");
+
     }
 
     /**

@@ -88,7 +88,7 @@ public class AdminService {
 	 */
 	public void add(Admin admin) {
 		admin.setId( idWorker.nextId()+"" );
-		String newpassword = DigestUtils.md5Hex(admin.getPassword());//加密后的密码
+		String newpassword = encoder.encode(admin.getPassword());//加密后的密码
 		admin.setPassword(newpassword);
 		adminDao.save(admin);
 	}
