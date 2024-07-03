@@ -19,21 +19,6 @@
                 <div class="layui-card-header">用户列表</div>
                 <div class="layui-card-body">
 
-<!--                    <div class="test-table-reload-btn" style="margin-bottom: 10px;">-->
-<!--                    搜索姓名：-->
-<!--                    <div class="layui-inline">-->
-<!--                    <input class="layui-input" name="username" id="username" autocomplete="off">-->
-<!--                    </div>-->
-<!--                        搜索id:-->
-<!--                        <div class="layui-inline">-->
-<!--                            <input class="layui-input" name="userid" id="userid" autocomplete="off">-->
-<!--                        </div>-->
-<!--                        搜索邮件：-->
-<!--                        <div class="layui-inline">-->
-<!--                            <input class="layui-input" name="useremail" id="useremail" autocomplete="off">-->
-<!--                        </div>-->
-<!--                    <button class="layui-btn" data-type="reload">搜索</button>-->
-<!--                    </div>-->
 
                     <table class="layui-hide" id="test-table-reload" lay-filter="test-table-reload"></table>
 
@@ -88,9 +73,9 @@
                         contentType: "application/json;charset=utf-8",
                         success: function(result) {
                             if(result.code == 0) {
-                                layer.msg(result.message,{icon: 1});
+                                layer.msg(result.msg,{icon: 1});
                             } else {
-                                layer.msg(result.message, {
+                                layer.msg(result.msg, {
                                     icon: 5
                                 });
                             }
