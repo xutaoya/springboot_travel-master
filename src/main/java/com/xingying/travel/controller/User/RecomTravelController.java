@@ -221,7 +221,6 @@ public class RecomTravelController {
     public String localRefresh(Model model,String id) {
         System.out.println("id::====="+id);
         Scenic scenic=scenicService.findById(id).get();
-        //	Sort sort=new Sort(Sort.Direction.DESC,"star");
         System.out.println(scenic.toString());
         List<Hotel> hotels=hotelService.findByCountryLike(scenic.getContry());
         System.out.println("2222"+hotels.toString());
